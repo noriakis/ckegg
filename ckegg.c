@@ -118,7 +118,7 @@ int ckegg_aa(int argc, char *argv[]) {
     struct string s;
     init_string(&s);
 
-    fprintf(stderr, "%s\n", url);
+    //fprintf(stderr, "%s\n", url);
     curl_easy_setopt(curl, CURLOPT_URL, url);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
@@ -251,7 +251,7 @@ int ckegg_aa(int argc, char *argv[]) {
     free(s.ptr);
     curl_easy_cleanup(curl);
     xmlCleanupParser();
-    fprintf(stderr, "%s\n",argv[1]);
+    //fprintf(stderr, "%s\n",argv[1]);
     FILE *fh = fopen(argv[1], "r");
     return 0;
 }
