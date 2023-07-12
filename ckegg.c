@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <unistd.h>
 #include <curl/curl.h>
 #include <stdio.h>
@@ -5,6 +6,7 @@
 #include <libxml/xmlreader.h>
 #include <libxml/xpath.h>
 
+// For curl
 struct string {
   char *ptr;
   size_t len;
@@ -36,9 +38,19 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
 }
 
 
+// https://stackoverflow.com/questions/9895216/how-to-remove-all-occurrences-of-a-given-character-from-string-in-c
+void remove_all_chars(char* str, char c) {
+    char *pr = str, *pw = str;
+    while (*pr) {
+        *pw = *pr++;
+        pw += (*pw != c);
+    }
+    *pw = '\0';
+}
+
+
 // Array definition
 // https://stackoverflow.com/questions/3536153/c-dynamically-growing-array
-
 typedef struct {
   int *array;
   size_t used;
@@ -69,6 +81,7 @@ void freeArray(Array *a) {
 // Drawing
 int draw(int r, int c, Array x, Array y, char *text, Array match, int doko) {
     char points[r+1][c+1];
+
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
             points[i][j] = ' ';
@@ -106,13 +119,12 @@ int ckegg_aa(int argc, char *argv[]) {
 
     if (argc == 1 && isatty(fileno(stdin))) {
 	fprintf(stderr, "Usage: ckegg aa [options]\n");
-	fprintf(stderr, "Options: -p CHAR  KEGG PATHWAY ID for global map\n");
+	fprintf(stderr, "Options: -p CHAR  KEGG PATHWAY ID\n");
 	fprintf(stderr, "         -x INT   Width of AA [100]\n");
 	fprintf(stderr, "         -y INT   Height of AA [50]\n");
 	fprintf(stderr, "         -f CHAR  File describing KO (one line per KO, no prefix `ko:`)\n");
         fprintf(stderr, "\n");
         fprintf(stderr, "Description of characters in AA:\n");
-
         fprintf(stderr, "c: #B3B3E6 Carbohydrate metabolism [Amino sugar and nucleotide sugar metabolism]\n");
 	fprintf(stderr, "s: #F06292 Biosynthesis of other secondary metabolites [Biosynthesis of various secondary metabolites - part 2]\n");
 	fprintf(stderr, "v: #FFB3CC Metabolism of cofactors and vitamins [Biosynthesis of cofactors]\n");
@@ -199,14 +211,20 @@ int ckegg_aa(int argc, char *argv[]) {
     res = curl_easy_perform(curl);
     xmlTextReaderPtr reader = xmlReaderForDoc(s.ptr,NULL,"UTF-8",1);
 
+    // store the gene name
+    char nar[300][300];
+    char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+-=[]{}|;':,/<>?";
+
+    char idar[300][300];
+    char e1ar[300][300];
+    char e2ar[300][300];
+
     // node reading
     int ret;
     Array x;
     Array y;
     Array match;
-    //Array R;
-    //Array G;
-    //Array B;
+
     xmlChar *name, *value;
     int xmax = 0;
     int ymax = 0;
@@ -216,16 +234,17 @@ int ckegg_aa(int argc, char *argv[]) {
     initArray(&y, 10);
     initArray(&match, 10);
 
-    //initArray(&R, 10);
-    //initArray(&G, 10);
-    //initArray(&B, 10);
-
-    //int r, g, b;
     char tex[5];
     // large in ko01100, around 32000
     char text[50000];
     int numel = 0;
     int koflag = 0;
+    int geneflag= 0;
+    int coordflag = 0;
+    char id[10];
+    char e1[10];
+    char e2[10];
+    int edgeflag = 0;
 
     if (reader != NULL) {
         ret = xmlTextReaderRead(reader);
@@ -240,7 +259,20 @@ int ckegg_aa(int argc, char *argv[]) {
 
                 if (xmlTextReaderName(reader) != NULL)
                 {
+		    // edge array
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "entry1") == 0) {
+			strcpy(e1, xmlTextReaderValue(reader));
+		    }
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "entry2") == 0) {
+			strcpy(e2, xmlTextReaderValue(reader));
+			strcpy(e1ar[edgeflag], e1);
+			strcpy(e2ar[edgeflag], e2);
+			edgeflag = edgeflag + 1;
+		    }
 
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "id") == 0) {
+			strcpy(id, xmlTextReaderValue(reader));
+		    }
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "fgcolor") == 0)
                     {
                            char *hex = (char*)xmlTextReaderValue(reader);
@@ -260,8 +292,39 @@ int ckegg_aa(int argc, char *argv[]) {
                            else if (strcmp(hex, "#8080F7")==0) *tex = 'r'; // carbo 
                            else *tex='.';
                     }
+			// Specify type of nodes we want to obtain
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "type") == 0) {
+				char *typen = (char*)xmlTextReaderValue(reader);
+				if (strcmp(typen, "gene")==0) {geneflag = 1;}
+				else if (strcmp(typen, "group")==0){geneflag=0;}
+				else if (strcmp(typen, "map")==0){geneflag=0;}
+				else {}
+			}
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "name") == 0) {
                         char *koname = (char*)xmlTextReaderValue(reader);
+			if (geneflag==1) {
+	                        if (strchr(koname, ':') != NULL) {
+        	                      // pass the KEGG ID
+                	        } else {
+				    // Assuming graphics_name
+					koflag = 0;
+                            		char *nmptr = strtok(koname, ",");
+					char *qptr = strtok(buffer, "\n");
+					int nmn = 0;
+                            		while (nmptr != NULL) {
+						if (nmn==0) {
+							remove_all_chars(nmptr,'.');
+							strcpy(nar[numel], nmptr);}
+						nmn = nmn+1;
+						while (qptr != NULL) {
+							if (strcmp(qptr, nmptr) == 0) {koflag = 1;}
+							qptr = strtok(NULL, "\n");
+						}
+						nmptr = strtok(NULL, ",");
+                            		}
+                            	}
+			}
+			// For ko type mapping
                         // avoid graphics_name
                         if (koname[2]==':') {
                             if (koname[0]=='k') {
@@ -286,8 +349,57 @@ int ckegg_aa(int argc, char *argv[]) {
                             }
                         }
                     }
+
+
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "x") == 0) {
+			if (geneflag==1) {
+				char *nx = (char*)xmlTextReaderValue(reader);
+				int nxi = atoi(nx); insertArray(&x, nxi);
+				int tmplen = strlen(nar[numel]);
+				int incFlag = 0;
+				for (int i=0; i<tmplen; i++) {
+					if (strchr(text, nar[numel][i]) == NULL) {
+						text[numel] = nar[numel][i];
+						incFlag = 1;
+						break;
+					} else if (strchr(text, tolower(nar[numel][i])) == NULL) {
+						text[numel] = tolower(nar[numel][i]);
+						incFlag = 1;
+						break;
+					} else {
+					}
+				}
+				if (incFlag == 0) {
+					char randomChar;
+					while (1) {
+					    int randomIndex = rand() % (sizeof(characters) - 1);
+    					    randomChar = characters[randomIndex];
+					    if (strchr(text, randomChar) != NULL) {
+						break;
+					    }
+					}
+					text[numel] = randomChar;
+				}
+				strcpy(idar[numel], id);
+				insertArray(&match, koflag);
+				numel = numel + 1;
+                	        if (nxi > xmax) {xmax = nxi;}
+                        	if (nxi < xmin) {xmin = nxi;}
+
+			}
+		    }
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "y") == 0) {
+			if (geneflag==1) {
+				char *ny = (char*)xmlTextReaderValue(reader);
+				int nyi = atoi(ny); insertArray(&y, nyi);
+                	        if (nyi > ymax) {ymax = nyi;}
+                        	if (nyi < ymin) {ymin = nyi;}
+			}
+		    }
+
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "coords") == 0)
                     {
+			coordflag = 1;
                         char *ptr = strtok(xmlTextReaderValue(reader), ",");
                         int flag = 0;
                         while(ptr != NULL)
@@ -296,15 +408,12 @@ int ckegg_aa(int argc, char *argv[]) {
                             cur = atoi(ptr);
                             //printf("%i",cur);
                             if (flag % 2 == 0) {
-                                if (cur > xmax) {xmax = cur;}
-                                if (cur < xmin) {xmin = cur;}
-                                insertArray(&x, cur);
-                                insertArray(&match, koflag);
-                                //insertArray(&R, r);
-                                //insertArray(&G, g);
+				if (cur > xmax) {xmax = cur;}
+				if (cur < xmin) {xmin = cur;}
+				insertArray(&x, cur);
+				insertArray(&match, koflag);
                                 text[numel] = *tex;
                                 numel = numel + 1;
-                                //insertArray(&B, b);
 
                             } else {
                                 if (cur > ymax) {ymax = cur;}
@@ -349,11 +458,27 @@ int ckegg_aa(int argc, char *argv[]) {
     //        printf("%i", match.array[i]);
     //    }
     // }
-    //printf("%i,%i,%i,%i,%i,%i\n",x.used,y.used,strlen(text),match.used,scaleX.used,scaleY.used);
+//    printf("%i,%i,%i,%i,%i,%i\n",x.used,y.used,strlen(text),match.used,scaleX.used,scaleY.used);
+//    printf("%i,%i\n",rx.used,ry.used);
     //for (int i=0; i<scaleX.used; i++) {
     //    printf("%i,%i\n",scaleX.array[i],scaleY.array[i]);
     //}
+
     draw(symax,sxmax,scaleY,scaleX,text,match,doko);
+
+    // print gene name
+    if (coordflag==0) {
+	printf("\n");
+	size_t len = strlen(text);
+    	for (int i=0; i<len; i++) {
+		printf("%c: %s ",text[i], nar[i]);
+		if (i != 0) {
+			if (i % 10 == 0) {printf("\n");}
+		}
+    	}
+	    printf("\n");
+    }
+
     free(s.ptr);
     curl_easy_cleanup(curl);
     xmlCleanupParser();

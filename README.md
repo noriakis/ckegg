@@ -151,3 +151,52 @@ echo K00055 | ckegg aa -pko01100 -f- -x100 -y50
                 ... x . ...     ..... . .......... .  ... ......
                 .     .. .. .  ...... . .............. .......
 ```
+
+For the pathways other than global map, nodes are represented as characters based on graphics name.
+If chracters are already used, random character will be assigned.
+
+```
+echo CDKN2A | ckegg aa -phsa04110 -f- -x60 -y20
+
+```
+
+```
+   .  ..  ..           .  .    .             .          .  .
+     .     .            .     .    .         .       .   .
+                                             .
+
+     .     .             C                               .
+.    .     .                  .  .   .       .    .
+                  .      .                               .
+     .            .                               .   .
+     .                 .      .              .        .
+                                     .            .      .
+  U   .  .   .  .   .      .     .           .    .      .
+                           .                    .
+                               .               .
+    .      .        .      .         .     .
+    .      .        .      .         .     .     .
+ .                         .                             .
+ .       .   .   .     .   .     .    .   .              .
+         .   .         . . .                           .
+         .   .                                         .
+                         .
+
+C: CDKN2A F: FZR1 M: MCM2 O: ORC6 A: ANAPC10 a: ANAPC10 S: SKP1 s: SKP1 c: CDK1 B: BUB1B P: PCNA
+p: PLK1 T: ATM D: DBF4 m: MAD2L2 b: BUB1 U: BUB3 d: CDC14B Y: YWHAQ f: SFN H: CHEK1
+K: CDKN1A R: PRKDC 2: MDM2 r: CREBBP k: SKP2 y: PKMYT1 W: WEE2 t: PTTG2 E: ESPL1 1: SMC1B
+B: SKP2 U: RB1 G: GADD45G m: RB1 5: TP53 N: CDKN1B n: CDKN2B g: TGFB1 4: SMAD4 b: SMAD2
+7: CDC7 0: CDC20 G: CDC25B Y: CDC45 6: CDC6 K: CDC25A 3: GSK3B 0: CDK1 U: CCNB3 n: CCNA2
+3: CDK7 7: CDK2 W: CDK2 7: CDK4 h: CCNH 5: CCNA2 e: CCNE1 F: CCND1 L: MAD1L1 0: TTK
+D: CDKN2C E: CDKN2D U: CDKN2A b: SMC3 A: STAG1 G: RAD21 l: RBL1 Y: E2F4 F: MYC Z: ZBTB17
+p: ABL1 T: TFDP1 4: E2F1 N: HDAC1 n: RB1 2: RBL1 T: TFDP1 T: E2F4 H: TFDP1 8: NDC80
+u: AURKB Y: KNL1 h: MAD2L1BP I: TRIP13 g: SMC1B H: SMC3 X: ATRX i: NIPBL l: MAU2 S: CDT1
+t: MTBP 8: TICRR o: ESCO1 A: RAD21 s: STAG1 x: DDX11 t: SMC1B K: SMC3 D: PDS5B w: WAPL
+T: RAD21 k: STAG1 C: CDCA5 r: HDAC8 c: CDK1 0: PLK1 4: SGO1 u: PPP2CA A: CDKN1A b: FBXO5
+p: TP53
+
+```
+
+## TODO
+
+- [ ] edge implementation
