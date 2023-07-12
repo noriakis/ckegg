@@ -155,32 +155,111 @@ echo K00055 | ckegg aa -pko01100 -f- -x100 -y50
 For the pathways other than global map, nodes are represented as characters based on graphics name.
 If chracters are already used, random character will be assigned.
 
+
+```
+ckegg aa -phsa05230 -y40
+
+```
+
+```
+                                                                      }
+                                            b                    T
+                                             .
+                                              U            T          o                .Y
+                                                                                       .
+_   L   B g  9   )    +    q    ^    _  p   q          4               <               .
+                                                    n                                  I
+                                                                       4               .
+                                                   L        z                           H
+    3                                       W                     J     i       G
+
+                                                                      6
+
+                                                                      ~
+
+
+
+                                                                        l
+    E... .....R... . ....... r... . ....... A... . ....... a .... . .    .   . ... . . .M... ......U
+                                                                                       . ... .     ~
+                                                                                       .  .. ..
+                             0                         Y   )  =     F    V    2        .   .. .    {
+                           F   &                                  p                    .    . . .  Y
+                                                                                       ...    .   .
+                                                                                       . .    . ..
+                                             '                  x     2                .  .    .
+         .!                                  .                                         .        .
+    .. ..G                                    E            5          z                i.. .     ...
+     ..                                                                                ....      ...
+      .   <                             K                              U               ..... . .....
+C   S  3     c    7     %    5    o   7     0      .P  T                               ......  .....
+         G           f          #                  .                  m                 ..... ......
+                                              D    d       b                           .  ..... . .
+                | !                                              &                     .... . ......
+    s           .                           1                           (              ..  .. .....
+                 D......N                          &                      q  N   7     ..     .....
+    e.....  .......                                                        n           .      .....
+    %.............. k.... .  ........ t...... .......  O ..... .  .    .     . ..... .  h
+    T                .       .
+A                                     .
+
+S: SLC2A1 C: C00031 c: C00092 0: C00022 3: C00031 G: GCK 6: C00064 2: C00025 1: C00186 s: SLC16A3 L: SLC2A1
+_: C00031 9: C00092 q: C00022 B: C00031 g: GCK 4: C00024 z: C00036 5: C00158 x: C00311 z: C00026
+U: C00042 m: C00122 &: C00149 b: C00036 l: GLS2 M: MYC Y: MYC I: SIRT6 H: HIF1A h: HIF1A
+P: PDHA1 7: C00704 G: C00704 i: SIRT3 p: PKM K: PKM D: LDHAL6A d: PDK1 E: EGFR R: HRAS
+r: RAF1 A: MAP2K1 a: MAPK1 e: EGFR %: ERBB2 T: MET k: PIK3CA t: AKT3 O: MTOR Y: SLC2A1
+{: SLC2A2 x: HK1 =: PGAM4 8: PKM K: LDHAL6A 0: PDK1 U: GLS2 (: SIRT3 i: SIRT6 <: HK1
+&: C00022 ~: SLC1A5 }: SLC1A5 ~: SLC1A5 n: PDHA1 L: PDK1 3: SLC16A3 7: C00085 ): C00158 ): C00085
+W: C00186 7: C00074 5: C00197 _: C00074 q: C00197 F: C00065 0: C00037 &: C00097 !: C00665 |: TIGAR
+D: TP53 o: C00631 %: C00354 ^: C00631 +: C00354 f: PFKL N: PTEN #: PGAM4 E: SCO2 ': TP53
+U: SCO2 b: TP53 }: SLC7A5 A: C00123 !: G6PD G: TP53 Y: C00024 =: C00311 F: C00026 p: IDH1
+T: C00311 o: C00036 <: C00042 4: C00122 J: C00149 q: C00041 N: C00152 n: C00049 V: C00148 2: C00062
+T: C00158 ): PFKL T: C00024
+```
+
+
+
+
+
+
+
+
 ```
 echo CDKN2A | ckegg aa -phsa04110 -f- -x60 -y20
 
 ```
 
 ```
-   .  ..  ..           .  .    .             .          .  .
-     .     .            .     .    .         .       .   .
-                                             .
+           .     .                          .       .
+     .  .  .      .                   .  .  .                               .                .  .  .
+        .                                .        .       .                 .           .       .
+                                                                            .
 
-     .     .             C                               .
-.    .     .                  .  .   .       .    .
-                  .      .                               .
-     .            .                               .   .
-     .                 .      .              .        .
-                                     .            .      .
-  U   .  .   .  .   .      .     .           .    .      .
-                           .                    .
-                               .               .
-    .      .        .      .         .     .
-    .      .        .      .         .     .     .
- .                         .                             .
- .       .   .   .     .   .     .    .   .              .
-         .   .         . . .                           .
-         .   .                                         .
-                         .
+
+                  .                                                                             .
+        .         .                        C                                                    .
+.       .         .                        .      ... .........             .      .            .
+.                              .       .. ... .........       .                    .            .
+ .                             .        ..   ..   .  .. . .   .                    .            .
+ .      .                                .     .  .  .     .  .                    .      .
+  .     .                          .....  ............. .......                    .      .
+        ..                             .  .    ..  ..   .     .             .      .
+.  .    .                                   .   .   ...  .........    .......      .            .
+.   U     .    .     .      .     .           .....   .... .  .........     ........            .
+.   .                                         .    .. .  ....         . .     ....
+.  .                                          .           ..  .. .        .    .
+.    .   ..... . .   ..... .       ..... .......... ... .....   .  .    .. ..... .
+.                    .       ..    .    .  .           ..         ..      ..   ..
+      .            .              . .    .   ..           .  .          .   .   .
+      .            .              .          .               .............  .......
+                                                             .. ....  ..  . .
+  .                                          .               .     . ..       .                 .
+  .            .     ........                .         .       .      .                         .
+                            .         .
+               .     .                .   .  .                                               .
+               .     .                                                                       .
+                                           .                                                 .
+                                           .                                                 .
 
 C: CDKN2A F: FZR1 M: MCM2 O: ORC6 A: ANAPC10 a: ANAPC10 S: SKP1 s: SKP1 c: CDK1 B: BUB1B P: PCNA
 p: PLK1 T: ATM D: DBF4 m: MAD2L2 b: BUB1 U: BUB3 d: CDC14B Y: YWHAQ f: SFN H: CHEK1
@@ -199,4 +278,4 @@ p: TP53
 
 ## TODO
 
-- [ ] edge implementation
+- [ ] edge type implementation

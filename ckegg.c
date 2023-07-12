@@ -79,14 +79,21 @@ void freeArray(Array *a) {
 
 
 // Drawing
-int draw(int r, int c, Array x, Array y, char *text, Array match, int doko) {
-    char points[r+1][c+1];
+int draw(int r, int c, Array x, Array y, char *text, Array match, int doko, Array epar1, Array epar2) {
+    char points[r+10][c+10];
 
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
             points[i][j] = ' ';
         }
     }
+    // Draw edges if available
+    if (epar1.used>0) {
+	    for (int i=0; i<epar1.used; i++) {
+		points[epar2.array[i]][epar1.array[i]] = '.';
+    	    }
+    }
+    // Override with nodes (or coords)
     for (int i=0; i<x.used; i++) {
         for (int j=0; j<y.used; j++) {
             if (doko!=0) {
@@ -215,7 +222,10 @@ int ckegg_aa(int argc, char *argv[]) {
     char nar[300][300];
     char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+-=[]{}|;':,/<>?";
 
+    // store the id
     char idar[300][300];
+
+    // store edges
     char e1ar[300][300];
     char e2ar[300][300];
 
@@ -225,14 +235,16 @@ int ckegg_aa(int argc, char *argv[]) {
     Array y;
     Array match;
 
+    initArray(&x, 10);
+    initArray(&y, 10);
+    initArray(&match, 10);
+
+
     xmlChar *name, *value;
     int xmax = 0;
     int ymax = 0;
     int xmin = 10000;
     int ymin = 10000;
-    initArray(&x, 10);
-    initArray(&y, 10);
-    initArray(&match, 10);
 
     char tex[5];
     // large in ko01100, around 32000
@@ -296,6 +308,7 @@ int ckegg_aa(int argc, char *argv[]) {
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "type") == 0) {
 				char *typen = (char*)xmlTextReaderValue(reader);
 				if (strcmp(typen, "gene")==0) {geneflag = 1;}
+				else if (strcmp(typen, "compound")==0) {geneflag = 1;}
 				else if (strcmp(typen, "group")==0){geneflag=0;}
 				else if (strcmp(typen, "map")==0){geneflag=0;}
 				else {}
@@ -327,7 +340,7 @@ int ckegg_aa(int argc, char *argv[]) {
 			// For ko type mapping
                         // avoid graphics_name
                         if (koname[2]==':') {
-                            if (koname[0]=='k') {
+                            if (koname[0]=='k' & koname[1]=='o') {
                                 koflag = 0;
                                 char *koptr = strtok(koname, " ");
                                 char *qptr = strtok(buffer, "\n");
@@ -457,11 +470,73 @@ int ckegg_aa(int argc, char *argv[]) {
     //for (int i=0; i<scaleX.used; i++) {
     //    printf("%i,%i\n",scaleX.array[i],scaleY.array[i]);
     //}
+    // test
+    // printf("%s, %s\n", e1ar[2], e2ar[2]);
 
-    draw(symax,sxmax,scaleY,scaleX,text,match,doko);
+    // edge indicates +
+    Array epar1;
+    Array epar2;
+    initArray(&epar1, 10);
+    initArray(&epar2, 10);
+
+    for (int k=0; k<edgeflag; k++) {
+
+        int x1, y1, x2, y2;
+        int e1flg = 0;
+        int e2flg = 0;
+
+        for (int i=0; i<numel; i++) {
+       	    if (strcmp(e1ar[k],idar[i])==0) {
+		e1flg = 1;
+		//printf("candidate from: %i, %i\n", scaleX.array[i], scaleY.array[i]);
+		x1 = scaleX.array[i]; y1 = scaleY.array[i];
+	    }
+	    if (strcmp(e2ar[k],idar[i])==0) {
+	        e2flg = 1;
+		//printf("candidate to: %i, %i\n", scaleX.array[i], scaleY.array[i]);
+		x2 = scaleX.array[i]; y2 = scaleY.array[i];
+	    }
+        }
+	int ep1; int ep2;
+	if (e1flg & e2flg) {
+		for (int p=0; p<15; p++) {
+			if (p>1) {
+				if (x1 >= x2) {
+				        ep1 = ((x1-x2)/p)*(p-1) + x2;
+				} else {
+			        	ep1 = ((x2-x1)/p)*(p-1) + x1;
+				}
+				if (y1 >= y2) {
+		        		ep2 = ((y1-y2)/p)*(p-1) + y2;
+				} else {
+	        			ep2 = ((y2-y1)/p)*(p-1) + y1;
+				}
+        			insertArray(&epar1, ep1);
+        			insertArray(&epar2, ep2);
+
+				if (x1 >= x2) {
+				        ep1 = ((x1-x2)/p) + x2;
+				} else {
+			        	ep1 = ((x2-x1)/p) + x1;
+				}
+				if (y1 >= y2) {
+		        		ep2 = ((y1-y2)/p) + y2;
+				} else {
+	        			ep2 = ((y2-y1)/p) + y1;
+				}
+        			insertArray(&epar1, ep1);
+        			insertArray(&epar2, ep2);
+			}
+		}
+	}
+    }
+
+
+    // draw on console
+    draw(symax,sxmax,scaleY,scaleX,text,match,doko,epar1,epar2);
 
     // print gene name
-    if (coordflag==0) {
+    if (coordflag==0) { // If not global map
 	printf("\n");
 	size_t len = strlen(text);
     	for (int i=0; i<len; i++) {
