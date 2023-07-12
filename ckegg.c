@@ -370,14 +370,8 @@ int ckegg_aa(int argc, char *argv[]) {
 					}
 				}
 				if (incFlag == 0) {
-					char randomChar;
-					while (1) {
-					    int randomIndex = rand() % (sizeof(characters) - 1);
-    					    randomChar = characters[randomIndex];
-					    if (strchr(text, randomChar) != NULL) {
-						break;
-					    }
-					}
+					int randIndex = rand() % 90;
+					char randomChar = characters[randIndex];
 					text[numel] = randomChar;
 				}
 				strcpy(idar[numel], id);
@@ -437,7 +431,7 @@ int ckegg_aa(int argc, char *argv[]) {
 
     xsize = x.used;
     ysize = y.used;
-    
+
     // Scale to fit in the window
     Array scaleX;
     Array scaleY;
