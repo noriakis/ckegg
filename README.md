@@ -12,12 +12,16 @@ cmake --build build
 
 ## Usage
 
+If you specify file name ending with `.xml` to `-p`, read from the local.
+
 ```
 Usage: ckegg aa [options]
-Options: -p CHAR  KEGG PATHWAY ID for global map
+Options: -p CHAR  KEGG PATHWAY ID
          -x INT   Width of AA [100]
          -y INT   Height of AA [50]
-         -f CHAR  File describing KO (one line per KO, no prefix `ko:`)
+         -s       Show node names
+         -n       No node mode, useful for ko01100
+         -f CHAR  File describing ID (one line per ID, no prefix in KO like [ko:])
 
 Description of characters in AA:
 c: #B3B3E6 Carbohydrate metabolism [Amino sugar and nucleotide sugar metabolism]
@@ -39,7 +43,7 @@ r: #8080F7 Carbohydrate metabolism [Citrate cycle (TCA cycle)]
 ## Output
 
 ```
-ckegg aa -pko01100
+ckegg aa -pko01100 -n
 ```
 
 ```
@@ -96,7 +100,7 @@ st            s lltlll  lllllllll llllccccccccccC C  rcCCCca aaaaaaaaaa aaan  aa
 ```
 
 ```
-echo K00055 | ckegg aa -pko01100 -f- -x100 -y50
+echo K00055 | ckegg aa -pko01100 -f- -x100 -y50 -n
 ```
 
 ```
@@ -157,7 +161,37 @@ If chracters are already used, random character will be assigned.
 
 
 ```
-ckegg aa -phsa05230 -y40
+ckegg aa -phsa03440 -x50 -y20
+```
+```
+                                             ~
+                                             .
+% s       x                       m    r...i..  t
+          3                       G    N   &.(..I.
+                                           ... <
+U U       z        b               0    P  . l
+7                  D A  5 a             &  S.c....
+                          x
+
+2         b                        =    8
+
+
+
+K _       x  6
+q         9                        p
+
+                     L e
+          4  0
+          k  K
+
+
+```
+
+Show the meaning of the characters.
+
+
+```
+ckegg aa -phsa05230 -y40 -s
 
 ```
 
@@ -218,14 +252,8 @@ T: C00158 ): PFKL T: C00024
 ```
 
 
-
-
-
-
-
-
 ```
-echo CDKN2A | ckegg aa -phsa04110 -f- -x60 -y20
+echo CDKN2A | ckegg aa -phsa04110 -f- -x60 -y20 -s
 
 ```
 

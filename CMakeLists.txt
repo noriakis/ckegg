@@ -1,3 +1,4 @@
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
 cmake_minimum_required(VERSION 3.0)  # or 3.10, see below
 
 project(ckegg VERSION 1.0.0)
