@@ -49,7 +49,7 @@ void remove_all_chars(char* str, char c) {
 }
 
 
-// Array definition
+/* Array definition */
 // https://stackoverflow.com/questions/3536153/c-dynamically-growing-array
 typedef struct {
   int *array;
@@ -78,7 +78,7 @@ void freeArray(Array *a) {
 }
 
 
-// Drawing
+/* Drawing */
 int draw(int r, int c, Array x, Array y, char *text, Array match, int doko, Array epar1, Array epar2) {
     char points[r+10][c+10];
 
@@ -172,7 +172,7 @@ int ckegg_aa(int argc, char *argv[]) {
 	}
     }
 
-    // Read KO file
+    /* Read query file */
     char *buffer = NULL;
     size_t size = 0;
 
@@ -199,37 +199,61 @@ int ckegg_aa(int argc, char *argv[]) {
             fclose(fp);
     }
 
-
-
-    // Obtain KGML from REST API
-    char url[255];
-    strcpy(url, "https://rest.kegg.jp/get/");
-    strcat(url,  pathway);
-    strcat(url, "/kgml");
-
     struct string s;
     init_string(&s);
+    char *pathwayBuffer = NULL;
+    size_t pathwaySize = 0;
+    xmlTextReaderPtr reader;
 
-    curl_easy_setopt(curl, CURLOPT_URL, url);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
 
-    res = curl_easy_perform(curl);
-    xmlTextReaderPtr reader = xmlReaderForDoc(s.ptr,NULL,"UTF-8",1);
+    /* Read from XML */
+    if (strpbrk(pathway, ".xml") != 0) {
+        fp = fopen(pathway, "r");
+        if (fp == NULL) {
+                printf("Can't read the file specified by -f");
+                exit (1);
+        }
 
-    // store the gene name
+        fseek(fp, 0, SEEK_END);
+        pathwaySize = ftell(fp);
+        rewind(fp);
+        pathwayBuffer = malloc((pathwaySize + 1) * sizeof(*pathwayBuffer));
+
+
+	fread(pathwayBuffer, pathwaySize, 1, fp);
+        pathwayBuffer[pathwaySize] = '\0';
+        reader = xmlReaderForDoc(pathwayBuffer,NULL,"UTF-8",1);
+        if (fp != stdin)
+            fclose(fp);
+
+    } else {
+    /* Obtain KGML from REST API */
+        char url[255];
+        strcpy(url, "https://rest.kegg.jp/get/");
+        strcat(url,  pathway);
+        strcat(url, "/kgml");
+
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+
+        res = curl_easy_perform(curl);
+        reader = xmlReaderForDoc(s.ptr,NULL,"UTF-8",1);
+    }
+
+    /* store the gene name */
     char nar[300][300];
     char characters[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()_+-=[]{}|;':,/<>?";
 
-    // store the id
+    /* store the id */
     char idar[300][300];
 
-    // store edges
+    /* store edges */
     char e1ar[300][300];
     char e2ar[300][300];
 
-    // node reading
+    /* node reading */
     int ret;
     Array x;
     Array y;
@@ -247,7 +271,7 @@ int ckegg_aa(int argc, char *argv[]) {
     int ymin = 10000;
 
     char tex[5];
-    // large in ko01100, around 32000
+    /* large in ko01100 */
     char text[50000];
     int numel = 0;
     int koflag = 0;
@@ -271,7 +295,11 @@ int ckegg_aa(int argc, char *argv[]) {
 
                 if (xmlTextReaderName(reader) != NULL)
                 {
-		    // edge array
+                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "id") == 0) {
+			strcpy(id, xmlTextReaderValue(reader));
+		    }
+
+		    /* edge array */
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "entry1") == 0) {
 			strcpy(e1, xmlTextReaderValue(reader));
 		    }
@@ -282,9 +310,6 @@ int ckegg_aa(int argc, char *argv[]) {
 			edgeflag = edgeflag + 1;
 		    }
 
-                    if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "id") == 0) {
-			strcpy(id, xmlTextReaderValue(reader));
-		    }
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "fgcolor") == 0)
                     {
                            char *hex = (char*)xmlTextReaderValue(reader);
@@ -413,7 +438,6 @@ int ckegg_aa(int argc, char *argv[]) {
                         {
                             int cur;
                             cur = atoi(ptr);
-                            //printf("%i",cur);
                             if (flag % 2 == 0) {
 				if (cur > xmax) {xmax = cur;}
 				if (cur < xmin) {xmin = cur;}
