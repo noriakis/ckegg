@@ -583,9 +583,7 @@ int ckegg_aa(int argc, char *argv[]) {
 	size_t len = strlen(text);
     	for (int i=0; i<nameNumber.used; i++) {
 		printf("%c: %s ",text[nameNumber.array[i]], nar[nameNumber.array[i]]);
-		if (i != 0) {
-			if (i % 10 == 0) {printf("\n");}
-		}
+		if ( (i+1) % 10 == 0) {printf("\n");}
     	}
         printf("\n");
     }
@@ -598,7 +596,9 @@ int ckegg_aa(int argc, char *argv[]) {
     return 0;
 }
 
-
+int ckegg_download(int argc, char *argv[]) {
+	return 0;
+}
 
 static int usage()
 {
@@ -606,6 +606,7 @@ static int usage()
         fprintf(stderr, "Usage:   ckegg <command> <arguments>\n");
         fprintf(stderr, "Version: 0.0.1\n\n");
         fprintf(stderr, "Command: aa       download and parse XML for drawing ascii art\n");
+	fprintf(stderr, "         download download XML and information and save\n");
         return 1;
 }
 
@@ -613,6 +614,7 @@ int main(int argc, char *argv[])
 {
         if (argc == 1) return usage();
         if (strcmp(argv[1], "aa") == 0) return ckegg_aa(argc-1, argv+1);
+        if (strcmp(argv[1], "download") == 0) return ckegg_download(argc-1, argv+1);
         else {
                 fprintf(stderr, "[main] unrecognized command '%s'. Abort!\n", argv[1]);
                 return 1;

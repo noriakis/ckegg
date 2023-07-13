@@ -192,9 +192,7 @@ Show the meaning of the characters.
 
 ```
 ckegg aa -phsa05230 -y40 -s
-
 ```
-
 ```
                                                                       }
                                             b                    T
@@ -237,71 +235,59 @@ C   S  3     c    7     %    5    o   7     0      .P  T                        
     T                .       .
 A                                     .
 
-S: SLC2A1 C: C00031 c: C00092 0: C00022 3: C00031 G: GCK 6: C00064 2: C00025 1: C00186 s: SLC16A3 L: SLC2A1
-_: C00031 9: C00092 q: C00022 B: C00031 g: GCK 4: C00024 z: C00036 5: C00158 x: C00311 z: C00026
-U: C00042 m: C00122 &: C00149 b: C00036 l: GLS2 M: MYC Y: MYC I: SIRT6 H: HIF1A h: HIF1A
-P: PDHA1 7: C00704 G: C00704 i: SIRT3 p: PKM K: PKM D: LDHAL6A d: PDK1 E: EGFR R: HRAS
-r: RAF1 A: MAP2K1 a: MAPK1 e: EGFR %: ERBB2 T: MET k: PIK3CA t: AKT3 O: MTOR Y: SLC2A1
-{: SLC2A2 x: HK1 =: PGAM4 8: PKM K: LDHAL6A 0: PDK1 U: GLS2 (: SIRT3 i: SIRT6 <: HK1
-&: C00022 ~: SLC1A5 }: SLC1A5 ~: SLC1A5 n: PDHA1 L: PDK1 3: SLC16A3 7: C00085 ): C00158 ): C00085
-W: C00186 7: C00074 5: C00197 _: C00074 q: C00197 F: C00065 0: C00037 &: C00097 !: C00665 |: TIGAR
-D: TP53 o: C00631 %: C00354 ^: C00631 +: C00354 f: PFKL N: PTEN #: PGAM4 E: SCO2 ': TP53
-U: SCO2 b: TP53 }: SLC7A5 A: C00123 !: G6PD G: TP53 Y: C00024 =: C00311 F: C00026 p: IDH1
-T: C00311 o: C00036 <: C00042 4: C00122 J: C00149 q: C00041 N: C00152 n: C00049 V: C00148 2: C00062
-T: C00158 ): PFKL T: C00024
-```
+S: SLC2A1 C: C00031 c: C00092 0: C00022 3: C00031 G: GCK 6: C00064 2: C00025 1: C00186 s: SLC16A3
+L: SLC2A1 _: C00031 9: C00092 q: C00022 B: C00031 g: GCK 4: C00024 z: C00036 5: C00158 x: C00311
+z: C00026 U: C00042 m: C00122 &: C00149 b: C00036 l: GLS2 M: MYC Y: MYC I: SIRT6 H: HIF1A
+h: HIF1A P: PDHA1 7: C00704 G: C00704 i: SIRT3 p: PKM K: PKM D: LDHAL6A d: PDK1 E: EGFR
+R: HRAS r: RAF1 A: MAP2K1 a: MAPK1 e: EGFR %: ERBB2 T: MET k: PIK3CA t: AKT3 O: MTOR
+Y: SLC2A1 {: SLC2A2 x: HK1 =: PGAM4 8: PKM K: LDHAL6A 0: PDK1 U: GLS2 (: SIRT3 i: SIRT6
+<: HK1 &: C00022 ~: SLC1A5 }: SLC1A5 ~: SLC1A5 n: PDHA1 L: PDK1 3: SLC16A3 7: C00085 ): C00158
+): C00085 W: C00186 7: C00074 5: C00197 _: C00074 q: C00197 F: C00065 0: C00037 &: C00097 !: C00665
+|: TIGAR D: TP53 o: C00631 %: C00354 ^: C00631 +: C00354 f: PFKL N: PTEN #: PGAM4 E: SCO2
+': TP53 U: SCO2 b: TP53 }: SLC7A5 A: C00123 !: G6PD G: TP53 Y: C00024 =: C00311 F: C00026
+p: IDH1 T: C00311 o: C00036 <: C00042 4: C00122 J: C00149 q: C00041 N: C00152 n: C00049 V: C00148
+2: C00062 T: C00158 ): PFKL T: C00024
 
+```
 
 ```
 echo CDKN2A | ckegg aa -phsa04110 -f- -x60 -y20 -s
-
 ```
 
 ```
-           .     .                          .       .
-     .  .  .      .                   .  .  .                               .                .  .  .
-        .                                .        .       .                 .           .       .
-                                                                            .
+   .  ..  ..           .  .    .             .          .  .
+     .     .            .     .    .         .       .   .
+                                             .
 
+     .     .             C                               .
+.    .     .             .    .. .....       .    .      .
+.                 .    . .........   .            .      .
+ .   .            .     .  .  . . .  .            .   .
+     .              .... .............       .    .   .
+. .  .                   .  .  .. ......  .....   .      .
+. U   .  .   .  .   .      ..... ..........  ......      .
+.  .                       .    .  .. .    .   ..
+.    ...... ......  .................. .   .....
+    .      .     .  ..   . .      .  .     . .  .
+    .      .        .      .         .............
+ .                         .         . .. .  .           .
+ .       .   .....     .   .     .    .   .              .
+         .   .         . . .                           .
+         .   .                                         .
+                         .                             .
 
-                  .                                                                             .
-        .         .                        C                                                    .
-.       .         .                        .      ... .........             .      .            .
-.                              .       .. ... .........       .                    .            .
- .                             .        ..   ..   .  .. . .   .                    .            .
- .      .                                .     .  .  .     .  .                    .      .
-  .     .                          .....  ............. .......                    .      .
-        ..                             .  .    ..  ..   .     .             .      .
-.  .    .                                   .   .   ...  .........    .......      .            .
-.   U     .    .     .      .     .           .....   .... .  .........     ........            .
-.   .                                         .    .. .  ....         . .     ....
-.  .                                          .           ..  .. .        .    .
-.    .   ..... . .   ..... .       ..... .......... ... .....   .  .    .. ..... .
-.                    .       ..    .    .  .           ..         ..      ..   ..
-      .            .              . .    .   ..           .  .          .   .   .
-      .            .              .          .               .............  .......
-                                                             .. ....  ..  . .
-  .                                          .               .     . ..       .                 .
-  .            .     ........                .         .       .      .                         .
-                            .         .
-               .     .                .   .  .                                               .
-               .     .                                                                       .
-                                           .                                                 .
-                                           .                                                 .
-
-C: CDKN2A F: FZR1 M: MCM2 O: ORC6 A: ANAPC10 a: ANAPC10 S: SKP1 s: SKP1 c: CDK1 B: BUB1B P: PCNA
-p: PLK1 T: ATM D: DBF4 m: MAD2L2 b: BUB1 U: BUB3 d: CDC14B Y: YWHAQ f: SFN H: CHEK1
-K: CDKN1A R: PRKDC 2: MDM2 r: CREBBP k: SKP2 y: PKMYT1 W: WEE2 t: PTTG2 E: ESPL1 1: SMC1B
-_: SKP2 q: RB1 G: GADD45G B: RB1 5: TP53 N: CDKN1B n: CDKN2B g: TGFB1 4: SMAD4 z: SMAD2
-7: CDC7 0: CDC20 x: CDC25B z: CDC45 6: CDC6 U: CDC25A 3: GSK3B m: CDK1 &: CCNB3 b: CCNA2
-G: CDK7 %: CDK2 Y: CDK2 {: CDK4 h: CCNH x: CCNA2 e: CCNE1 =: CCND1 L: MAD1L1 8: TTK
-K: CDKN2C 0: CDKN2D U: CDKN2A (: SMC3 i: STAG1 <: RAD21 l: RBL1 &: E2F4 ~: MYC Z: ZBTB17
-}: ABL1 ~: TFDP1 n: E2F1 L: HDAC1 3: RB1 7: RBL1 ): TFDP1 ): E2F4 W: TFDP1 7: NDC80
-u: AURKB 5: KNL1 _: MAD2L1BP I: TRIP13 q: SMC1B F: SMC3 X: ATRX 0: NIPBL &: MAU2 !: CDT1
-|: MTBP D: TICRR o: ESCO1 o: RAD21 %: STAG1 ^: DDX11 +: SMC1B #: SMC3 E: PDS5B w: WAPL
-': RAD21 U: STAG1 b: CDCA5 }: HDAC8 A: CDK1 !: PLK1 G: SGO1 Y: PPP2CA =: CDKN1A F: FBXO5
-p: TP53
-
+C: CDKN2A F: FZR1 M: MCM2 O: ORC6 A: ANAPC10 a: ANAPC10 S: SKP1 s: SKP1 c: CDK1 B: BUB1B
+P: PCNA p: PLK1 T: ATM D: DBF4 m: MAD2L2 b: BUB1 U: BUB3 d: CDC14B Y: YWHAQ f: SFN
+H: CHEK1 K: CDKN1A R: PRKDC 2: MDM2 r: CREBBP k: SKP2 y: PKMYT1 W: WEE2 t: PTTG2 E: ESPL1
+1: SMC1B _: SKP2 q: RB1 G: GADD45G B: RB1 5: TP53 N: CDKN1B n: CDKN2B g: TGFB1 4: SMAD4
+z: SMAD2 7: CDC7 0: CDC20 x: CDC25B z: CDC45 6: CDC6 U: CDC25A 3: GSK3B m: CDK1 &: CCNB3
+b: CCNA2 G: CDK7 %: CDK2 Y: CDK2 {: CDK4 h: CCNH x: CCNA2 e: CCNE1 =: CCND1 L: MAD1L1
+8: TTK K: CDKN2C 0: CDKN2D U: CDKN2A (: SMC3 i: STAG1 <: RAD21 l: RBL1 &: E2F4 ~: MYC
+Z: ZBTB17 }: ABL1 ~: TFDP1 n: E2F1 L: HDAC1 3: RB1 7: RBL1 ): TFDP1 ): E2F4 W: TFDP1
+7: NDC80 u: AURKB 5: KNL1 _: MAD2L1BP I: TRIP13 q: SMC1B F: SMC3 X: ATRX 0: NIPBL &: MAU2
+!: CDT1 |: MTBP D: TICRR o: ESCO1 o: RAD21 %: STAG1 ^: DDX11 +: SMC1B #: SMC3 E: PDS5B
+w: WAPL ': RAD21 U: STAG1 b: CDCA5 }: HDAC8 A: CDK1 !: PLK1 G: SGO1 Y: PPP2CA =: CDKN1A
+F: FBXO5 p: TP53
 ```
 
 ## TODO
