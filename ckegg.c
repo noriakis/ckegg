@@ -129,7 +129,7 @@ int ckegg_aa(int argc, char *argv[]) {
 	fprintf(stderr, "Options: -p CHAR  KEGG PATHWAY ID\n");
 	fprintf(stderr, "         -x INT   Width of AA [100]\n");
 	fprintf(stderr, "         -y INT   Height of AA [50]\n");
-	fprintf(stderr, "         -f CHAR  File describing KO (one line per KO, no prefix `ko:`)\n");
+	fprintf(stderr, "         -f CHAR  File describing ID (one line per ID, no prefix in KO like [ko:])\n");
         fprintf(stderr, "\n");
         fprintf(stderr, "Description of characters in AA:\n");
         fprintf(stderr, "c: #B3B3E6 Carbohydrate metabolism [Amino sugar and nucleotide sugar metabolism]\n");
@@ -308,7 +308,7 @@ int ckegg_aa(int argc, char *argv[]) {
                     if (xmlStrcmp(xmlTextReaderName(reader), BAD_CAST "type") == 0) {
 				char *typen = (char*)xmlTextReaderValue(reader);
 				if (strcmp(typen, "gene")==0) {geneflag = 1;}
-				else if (strcmp(typen, "compound")==0) {geneflag = 1;}
+				//else if (strcmp(typen, "compound")==0) {geneflag = 1;}
 				else if (strcmp(typen, "group")==0){geneflag=0;}
 				else if (strcmp(typen, "map")==0){geneflag=0;}
 				else {}
